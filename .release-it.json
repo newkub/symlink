@@ -1,0 +1,25 @@
+{
+	"git": {
+		"commit": true,
+		"commitMessage": "chore: release v${version}",
+		"push": true,
+		"requireCleanWorkingDir": false,
+		"requireUpstream": false,
+		"tag": true,
+		"tagName": "v${version}"
+	},
+	"github": {
+		"release": false
+	},
+	"hooks": {
+		"after:release": [
+			"echo ✅ Successfully released ${name}@${version} to npm!",
+			"echo 📦 Install with: bun add ${name}"
+		],
+		"before:init": ["bun run pre-release"]
+	},
+	"npm": {
+		"publish": true,
+		"publishPath": "."
+	}
+}
