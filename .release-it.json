@@ -14,9 +14,9 @@
 	"hooks": {
 		"after:release": [
 			"echo ✅ Successfully released ${name}@${version} to npm!",
-			"echo 📦 Install with: bun add ${name}"
+			"echo 📦 Install with: npm install ${name}"
 		],
-		"before:init": ["bun run pre-release"]
+		"before:init": ["npm run review"]
 	},
 	"npm": {
 		"publish": true,
