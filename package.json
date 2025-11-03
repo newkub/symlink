@@ -1,6 +1,6 @@
 {
   "bin": {
-    "wrikka-symlink": "./dist/index.js"
+    "wsymlink": "./dist/index.js"
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0"
@@ -30,7 +30,7 @@
   "license": "MIT",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
-  "name": "wsymlink",
+  "name": "wymlink",
   "private": false,
   "scripts": {
     "build": "tsdown --exports --dts && bun link",
