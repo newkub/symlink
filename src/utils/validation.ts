@@ -1,4 +1,4 @@
-import { lstat } from 'node:fs/promises';
+import { lstat, readlink } from 'node:fs/promises';
 import { isNodeError } from './type-guards';
 
 export async function checkPathType(path: string): Promise<'symlink' | 'directory' | 'file' | 'none'> {
@@ -11,6 +11,18 @@ export async function checkPathType(path: string): Promise<'symlink' | 'director
   } catch (error) {
     if (isNodeError(error) && error.code === 'ENOENT') {
       return 'none';
+    }
+    throw error;
+  }
+}
+
+export async function isSymlink(path: string): Promise<boolean> {
+  try {
+    await readlink(path);
+    return true;
+  } catch (error) {
+    if (isNodeError(error) && (error.code === 'ENOENT' || error.code === 'EINVAL')) {
+      return false;
     }
     throw error;
   }

@@ -66,7 +66,12 @@ export async function createSymlinkFlow() {
       console.log(result.message);
     }
 
-    s.stop('✅ Symlink created successfully!');
+    if (result.success) {
+      s.stop('✅ Symlink created successfully!');
+    } else {
+      s.stop('❌ Failed to create symlink');
+      throw new Error(result.message);
+    }
   } catch (error) {
     s.stop('❌ Failed to create symlink');
     throw error;
