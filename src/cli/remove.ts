@@ -1,7 +1,7 @@
 import { text, confirm, spinner as createSpinner } from '@clack/prompts';
 import { resolve } from 'node:path';
 import { rm } from 'node:fs/promises';
-import { checkPathType } from '../utils/validation.js';
+import { checkPathType } from '../utils/validation';
 
 export async function removeSymlinkFlow() {
   const source = await text({

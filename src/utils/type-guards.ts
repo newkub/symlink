@@ -1,4 +1,4 @@
-import type { SymlinkError } from '../core/types.js';
+import type { SymlinkError } from '../types';
 
 export function isSymlinkError(error: unknown): error is SymlinkError {
   return (

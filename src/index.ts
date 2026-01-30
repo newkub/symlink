@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 import { intro, outro, select } from '@clack/prompts';
-import { createSymlinkFlow, removeSymlinkFlow, checkSymlinkFlow, listSymlinksFlow } from './cli/index.js';
+import { createSymlinkFlow, removeSymlinkFlow, checkSymlinkFlow, listSymlinksFlow } from './cli';
 
 async function main() {
   intro('🔗 Symlink CLI');

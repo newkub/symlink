@@ -1,4 +1,4 @@
-import { isSymlinkError } from './type-guards.js';
+import { isSymlinkError } from './type-guards';
 
 export function formatError(error: unknown, context?: string): string {
   if (isSymlinkError(error)) {

@@ -1,6 +1,6 @@
 import { text } from '@clack/prompts';
 import { resolve } from 'node:path';
-import { checkPathType } from '../utils/validation.js';
+import { checkPathType } from '../utils/validation';
 
 export async function checkSymlinkFlow() {
   const path = await text({

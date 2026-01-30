@@ -1,5 +1,5 @@
 import { text, confirm, spinner as createSpinner } from '@clack/prompts';
-import { createSymlink } from '../utils/symlink.js';
+import { createSymlink } from '../utils/symlink';
 
 export async function createSymlinkFlow() {
   const source = await text({
@@ -51,10 +51,20 @@ export async function createSymlinkFlow() {
   s.start('Creating symlink...');
 
   try {
-    await createSymlink(source, targetPath, {
+    const result = await createSymlink(source, targetPath, {
       dryRun,
       verbose,
     });
+
+    if (verbose && result.removed) {
+      for (const removed of result.removed) {
+        console.log(`Removed existing ${removed.type} at ${removed.path}`);
+      }
+    }
+
+    if (verbose) {
+      console.log(result.message);
+    }
 
     s.stop('✅ Symlink created successfully!');
   } catch (error) {

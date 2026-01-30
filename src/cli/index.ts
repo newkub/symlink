@@ -1,4 +1,4 @@
-export { createSymlinkFlow } from './create.js';
-export { removeSymlinkFlow } from './remove.js';
-export { checkSymlinkFlow } from './check.js';
-export { listSymlinksFlow } from './list.js';
+export { createSymlinkFlow } from './create';
+export { removeSymlinkFlow } from './remove';
+export { checkSymlinkFlow } from './check';
+export { listSymlinksFlow } from './list';

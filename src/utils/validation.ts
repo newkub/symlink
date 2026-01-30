@@ -1,5 +1,5 @@
 import { lstat } from 'node:fs/promises';
-import { isNodeError } from './type-guards.js';
+import { isNodeError } from './type-guards';
 
 export async function checkPathType(path: string): Promise<'symlink' | 'directory' | 'file' | 'none'> {
   try {

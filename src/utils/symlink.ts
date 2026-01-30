@@ -1,48 +1,70 @@
 import { resolve } from 'node:path';
 import { rm, symlink } from 'node:fs/promises';
-import type { CreateSymlinkOptions } from '../types/index.js';
-import { checkPathType } from './validation.js';
+import type { CreateSymlinkOptions } from '../types';
+import { checkPathType } from './validation';
+
+export interface SymlinkResult {
+  success: boolean;
+  source: string;
+  target: string;
+  message: string;
+  removed?: Array<{
+    path: string;
+    type: 'source' | 'target';
+  }>;
+}
 
 /**
- * Create a symlink from source to target
+ * Create a symlink from source to target (pure function)
  */
-export async function createSymlink(source: string, target: string, options: CreateSymlinkOptions = {}): Promise<void> {
+export async function createSymlink(
+  source: string,
+  target: string,
+  options: CreateSymlinkOptions = {}
+): Promise<SymlinkResult> {
   const resolvedSource = resolve(source);
   const resolvedTarget = resolve(target);
 
-  if (options.verbose) {
-    console.log(`Source: ${resolvedSource}`);
-    console.log(`Target: ${resolvedTarget}`);
-  }
-
   if (options.dryRun) {
-    console.log(`[DRY RUN] Would create symlink: ${resolvedSource} -> ${resolvedTarget}`);
-    return;
+    return {
+      success: true,
+      source: resolvedSource,
+      target: resolvedTarget,
+      message: `[DRY RUN] Would create symlink: ${resolvedSource} -> ${resolvedTarget}`,
+    };
   }
 
-  // Remove existing symlink at source or target if exists
+  const removed: Array<{ path: string; type: 'source' | 'target' }> = [] as any;
+
   // Check if source is symlink
   const sourceType = await checkPathType(resolvedSource);
   if (sourceType === 'symlink') {
-    if (options.verbose) {
-      console.log(`Removing existing symlink at ${resolvedSource}`);
-    }
     await rm(resolvedSource, { force: true });
+    removed.push({ path: resolvedSource, type: 'source' });
   } else if (sourceType === 'directory' || sourceType === 'file') {
     // Check if there's a symlink from target to source
     const targetType = await checkPathType(resolvedTarget);
     if (targetType === 'symlink') {
-      if (options.verbose) {
-        console.log(`Removing existing symlink at ${resolvedTarget}`);
-      }
       await rm(resolvedTarget, { force: true });
+      removed.push({ path: resolvedTarget, type: 'target' });
     } else {
-      throw new Error(`Path ${resolvedSource} already exists and is not a symlink. Remove it first or use a different path.`);
+      return {
+        success: false,
+        source: resolvedSource,
+        target: resolvedTarget,
+        message: `Path ${resolvedSource} already exists and is not a symlink. Remove it first or use a different path.`,
+      };
     }
   }
 
   // Create the symlink
-  console.log(`Creating symlink: ${resolvedSource} -> ${resolvedTarget}`);
   await symlink(resolvedTarget, resolvedSource, 'junction');
-  console.log(`Successfully created symlink: ${resolvedSource} -> ${resolvedTarget}`);
+
+  return {
+    success: true,
+    source: resolvedSource,
+    target: resolvedTarget,
+    message: `Successfully created symlink: ${resolvedSource} -> ${resolvedTarget}`,
+    removed: removed.length > 0 ? removed : undefined,
+  };
 }

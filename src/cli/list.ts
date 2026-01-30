@@ -1,7 +1,7 @@
 import { text } from '@clack/prompts';
 import { resolve } from 'node:path';
 import { readdir } from 'node:fs/promises';
-import { checkPathType } from '../utils/validation.js';
+import { checkPathType } from '../utils/validation';
 
 export async function listSymlinksFlow() {
   const dirPath = await text({
