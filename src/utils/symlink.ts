@@ -2,7 +2,6 @@ import { resolve } from 'node:path';
 import { rm, symlink } from 'node:fs/promises';
 import type { CreateSymlinkOptions } from '../types/index.js';
 import { checkPathType } from './validation.js';
-import { isNodeError } from './type-guards.js';
 
 /**
  * Create a symlink from source to target
@@ -21,21 +20,24 @@ export async function createSymlink(source: string, target: string, options: Cre
     return;
   }
 
-  // Remove existing symlink at source if exists
-  try {
-    const pathType = await checkPathType(resolvedSource);
-    if (pathType === 'symlink') {
-      if (options.verbose) {
-        console.log(`Removing existing symlink at ${resolvedSource}`);
-      }
-      await rm(resolvedSource, { force: true });
-    } else if (pathType === 'directory' || pathType === 'file') {
-      throw new Error(`Path ${resolvedSource} already exists and is not a symlink. Remove it first or use a different path.`);
+  // Remove existing symlink at source or target if exists
+  // Check if source is symlink
+  const sourceType = await checkPathType(resolvedSource);
+  if (sourceType === 'symlink') {
+    if (options.verbose) {
+      console.log(`Removing existing symlink at ${resolvedSource}`);
     }
-  } catch (error) {
-    // ENOENT means file doesn't exist, which is fine
-    if (isNodeError(error) && error.code !== 'ENOENT') {
-      throw error;
+    await rm(resolvedSource, { force: true });
+  } else if (sourceType === 'directory' || sourceType === 'file') {
+    // Check if there's a symlink from target to source
+    const targetType = await checkPathType(resolvedTarget);
+    if (targetType === 'symlink') {
+      if (options.verbose) {
+        console.log(`Removing existing symlink at ${resolvedTarget}`);
+      }
+      await rm(resolvedTarget, { force: true });
+    } else {
+      throw new Error(`Path ${resolvedSource} already exists and is not a symlink. Remove it first or use a different path.`);
     }
   }
 

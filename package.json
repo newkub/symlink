@@ -29,7 +29,7 @@
     "dev": "bun run src/index.ts",
     "build": "bun build ./src/index.ts --compile --outfile ./dist/symlink",
     "verify": "bun run lint && bun run test && bun run build",
-    "lint": "oxlint",
+    "lint": "tsc --noEmit && oxlint",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
   },
