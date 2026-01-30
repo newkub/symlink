@@ -47,7 +47,6 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@clack/prompts": "^1.0.0",
-    "commander": "^14.0.2"
+    "@clack/prompts": "^1.0.0"
   }
 }

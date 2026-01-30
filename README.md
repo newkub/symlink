@@ -1,21 +1,23 @@
 # 🔗 Symlink CLI
 
-A simple command-line tool for creating symbolic links using Commander.js.
+A simple command-line tool for creating symbolic links with interactive prompts.
 
 ## ✨ Features
 
-- 📝 Simple command-line interface using Commander.js
+- 🎯 Interactive prompts using @clack/prompts
 - 🔗 Creates junction symlinks on Windows
 - 🗑️ Automatically removes existing symlinks before creating new ones
-- 💻 Cross-platform support (Windows junctions, Unix symlinks)
-- � Clear console output showing source and target paths
+- � List symlinks in directories
+- ✅ Check if paths are symlinks
+- �💻 Cross-platform support (Windows junctions, Unix symlinks)
+- 🎨 Clear console output with emojis
 
 ## 📦 Installation
 
 ### Running directly
 
 ```bash
-bun run src/index.ts <source-path>
+bun run src/index.ts
 ```
 
 ### Global Installation (Recommended)
@@ -26,126 +28,88 @@ bun install -g
 
 ## 🚀 Usage
 
-### Display help
+### Display menu
 
 ```bash
 symlink
-# or
-symlink --help
 ```
 
 ### Create a symlink
 
-```bash
-symlink <source-path>
-```
-
-The tool will create a symlink from `<source-path>` to the current working directory.
+Select "Create a symlink" from the menu, then provide:
+- Source path to link from
+- Target path to link to
+- Dry run option
+- Verbose output option
 
 **Example:**
 
-```bash
-# Create a symlink from C:\Users\test\source to the current directory
-symlink C:\Users\test\source
 ```
+┌  🔗 Symlink CLI
+│
+◆  What would you like to do?
+│  ● Create a symlink
+│  ○ Remove a symlink
+│  ○ Check if path is a symlink
+│  ○ List symlinks in directory
+└
+```
+
+### Remove a symlink
+
+Select "Remove a symlink" from the menu, then provide:
+- Symlink path to remove
+- Verbose output option
+
+### Check if path is a symlink
+
+Select "Check if path is a symlink" from the menu, then provide:
+- Path to check
 
 **Output:**
 
 ```
-Source: C:\Users\test\source
-Target: D:\symlink
-Creating symlink: C:\Users\test\source -> D:\symlink
-Successfully created symlink: C:\Users\test\source -> D:\symlink
+Path: d:\symlink\a
+Type: symlink
+✅ This is a symlink
 ```
 
-### Specify target path
+### List symlinks in directory
 
-```bash
-symlink <source-path> --target <target-path>
-# or
-symlink <source-path> -t <target-path>
-```
-
-**Example:**
-
-```bash
-# Create a symlink from test\real-test\source to D:\target
-symlink test\real-test\source --target D:\target
-```
-
-### Dry run (preview without changes)
-
-```bash
-symlink <source-path> --dry-run
-# or
-symlink <source-path> -d
-```
-
-**Example:**
-
-```bash
-symlink test\real-test\source --dry-run
-```
+Select "List symlinks in directory" from the menu, then provide:
+- Directory path
 
 **Output:**
 
 ```
-[DRY RUN] Would create symlink: D:\symlink\test\real-test\source -> D:\symlink
+📂 Listing symlinks in: d:\symlink
+
+🔗 symlink1
+🔗 symlink2
+
+Total: 2 symlink(s)
 ```
-
-### Verbose mode
-
-```bash
-symlink <source-path> --verbose
-# or
-symlink <source-path> -v
-```
-
-Shows detailed output including source/target paths and removal of existing symlinks.
-
-**Example:**
-
-```bash
-symlink test\real-test\source --verbose
-```
-
-**Output:**
-
-```
-Source: D:\symlink\test\real-test\source
-Target: D:\symlink
-Removing existing symlink at D:\symlink\test\real-test\source
-Creating symlink: D:\symlink\test\real-test\source -> D:\symlink
-Successfully created symlink: D:\symlink\test\real-test\source -> D:\symlink
-```
-
-## 📝 Options
-
-| Option | Description |
-|--------|-------------|
-| `-t, --target <path>` | Target path to link to (default: current directory) |
-| `-d, --dry-run` | Show what would be done without making changes |
-| `-v, --verbose` | Show detailed output |
-| `-V, --version` | Output the version number |
-| `-h, --help` | Display help for command |
 
 ## 💡 Examples
 
 ### Example 1: Create a symlink to a local directory
 
-```bash
-symlink test\real-test\source
+```
+1. Select "Create a symlink"
+2. Source: test\real-test\source
+3. Target: (current directory)
+4. Dry run: No
+5. Verbose: Yes
 ```
 
 This creates a symlink from `test\real-test\source` to the current directory.
 
-### Example 2: Create a symlink to an absolute path
+### Example 2: Check if a path is a symlink
 
-```bash
-symlink C:\Users\Veerapong\.codeium\windsurf\skills\refactor
 ```
-
-This creates a symlink from the specified path to the current directory.
+1. Select "Check if path is a symlink"
+2. Path: d:\symlink\a
+```
 
 ## 🧪 Testing
 
