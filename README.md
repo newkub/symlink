@@ -1,73 +1,160 @@
 # 🔗 Symlink CLI
 
-A simple and interactive command-line tool for creating symbolic links.
+A simple command-line tool for creating symbolic links using Commander.js.
 
 ## ✨ Features
 
-- Interactive prompts for source and target paths.
-- Checks for existing files or symlinks at the target path.
-- Option to force overwrite existing targets.
-- Cross-platform support for creating junctions on Windows.
+- 📝 Simple command-line interface using Commander.js
+- 🔗 Creates junction symlinks on Windows
+- 🗑️ Automatically removes existing symlinks before creating new ones
+- 💻 Cross-platform support (Windows junctions, Unix symlinks)
+- � Clear console output showing source and target paths
 
 ## 📦 Installation
-
-To use this tool, you can either run it directly using Bun or install it globally.
 
 ### Running directly
 
 ```bash
-bun run src/index.ts
+bun run src/index.ts <source-path>
 ```
 
 ### Global Installation (Recommended)
 
 ```bash
-bun link
+bun install -g
 ```
 
 ## 🚀 Usage
 
-After global installation, you can run the tool from anywhere:
+### Display help
 
 ```bash
 symlink
+# or
+symlink --help
 ```
 
-The tool will guide you through the process with interactive prompts:
+### Create a symlink
 
-1.  **Source path:** Enter the absolute or relative path to the file/directory you want to link from.
-2.  **Target path:** Enter the absolute or relative path where the symlink should be created.
-3.  **Force overwrite:** Confirm if you want to overwrite the target path if it already exists.
+```bash
+symlink <source-path>
+```
+
+The tool will create a symlink from `<source-path>` to the current working directory.
+
+**Example:**
+
+```bash
+# Create a symlink from C:\Users\test\source to the current directory
+symlink C:\Users\test\source
+```
+
+**Output:**
+
+```
+Source: C:\Users\test\source
+Target: D:\symlink
+Creating symlink: C:\Users\test\source -> D:\symlink
+Successfully created symlink: C:\Users\test\source -> D:\symlink
+```
+
+### Specify target path
+
+```bash
+symlink <source-path> --target <target-path>
+# or
+symlink <source-path> -t <target-path>
+```
+
+**Example:**
+
+```bash
+# Create a symlink from test\real-test\source to D:\target
+symlink test\real-test\source --target D:\target
+```
+
+### Dry run (preview without changes)
+
+```bash
+symlink <source-path> --dry-run
+# or
+symlink <source-path> -d
+```
+
+**Example:**
+
+```bash
+symlink test\real-test\source --dry-run
+```
+
+**Output:**
+
+```
+[DRY RUN] Would create symlink: D:\symlink\test\real-test\source -> D:\symlink
+```
+
+### Verbose mode
+
+```bash
+symlink <source-path> --verbose
+# or
+symlink <source-path> -v
+```
+
+Shows detailed output including source/target paths and removal of existing symlinks.
+
+**Example:**
+
+```bash
+symlink test\real-test\source --verbose
+```
+
+**Output:**
+
+```
+Source: D:\symlink\test\real-test\source
+Target: D:\symlink
+Removing existing symlink at D:\symlink\test\real-test\source
+Creating symlink: D:\symlink\test\real-test\source -> D:\symlink
+Successfully created symlink: D:\symlink\test\real-test\source -> D:\symlink
+```
 
 ## 📝 Options
 
-The CLI currently operates through interactive prompts. The following option is available as a confirmation step:
+| Option | Description |
+|--------|-------------|
+| `-t, --target <path>` | Target path to link to (default: current directory) |
+| `-d, --dry-run` | Show what would be done without making changes |
+| `-v, --verbose` | Show detailed output |
+| `-V, --version` | Output the version number |
+| `-h, --help` | Display help for command |
 
--   **Force overwrite:** Allows the tool to replace an existing file or symlink at the target destination.
+## 💡 Examples
 
-## 💡 Example
+### Example 1: Create a symlink to a local directory
 
-Here is an example of creating a symlink from `D:\wgit` to the current directory (`D:\symlink`):
-
+```bash
+symlink test\real-test\source
 ```
-$ symlink
 
-┌  🔗 Symlink CLI
-│
-◇  Source path:
-│  D:\wgit
-│
-◇  Target path:
-│  .
-│
-◇  Force overwrite if target exists?
-│  Yes
-│
-✔  Successfully created symlink: D:\symlink -> D:\wgit
-│
-└  Done! ✨
+This creates a symlink from `test\real-test\source` to the current directory.
+
+### Example 2: Create a symlink to an absolute path
+
+```bash
+symlink C:\Users\Veerapong\.codeium\windsurf\skills\refactor
+```
+
+This creates a symlink from the specified path to the current directory.
+
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+bun test
 ```
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
